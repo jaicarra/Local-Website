@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antoni Bednarz Usługi Transportowo-Dźwigowe</title>
+    <!-- Tailwind CSS -->
+    <link href="./dist/output.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light gray background */
+        }
+        /* Custom scrollbar for aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6; /* Blue scrollbar */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb; /* Darker blue on hover */
+        }
+
+        /* Gallery Image Hover Effect (subtler) */
+        .gallery-item img {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition for scale and shadow */
+            cursor: pointer; /* Indicate clickable */
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05); /* Slightly enlarge the image on hover */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        /* Lightbox Modal Styling */
+        .lightbox-modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: hidden; /* Prevent scrollbars on modal itself */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Allow caption below image */
+        }
+
+        .lightbox-image-wrapper {
+            position: relative; /* For positioning arrows relative to the image */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 90%;
+            max-height: 80%;
+        }
+
+        .lightbox-content {
+            display: block;
+            max-width: 100%; /* Image takes full width of its wrapper */
+            max-height: 100%; /* Image takes full height of its wrapper */
+            object-fit: contain; /* Ensure image fits within bounds */
+            animation: zoomIn 0.3s ease-out; /* Simple zoom-in animation */
+        }
+
+        .lightbox-caption {
+            margin-top: 15px;
+            color: #ccc;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 18px;
+            max-width: 80%; /* Limit caption width */
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Navigation Arrows */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute; /* Position relative to .lightbox-image-wrapper */
+            top: 50%;
+            transform: translateY(-50%); /* Vertically center */
+            width: auto;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            transition: 0.6s ease;
+            user-select: none;
+            -webkit-user-select: none;
+            background-color: rgba(0,0,0,0.5); /* Semi-transparent background */
+            border-radius: 3px; /* Slightly rounded corners */
+        }
+
+        .prev {
+            left: 0;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .next {
+            right: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        /* Animations */
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Header/Navigation -->
+    <header class="bg-blue-700 text-white shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="text-2xl font-bold rounded-md px-2 py-1 bg-blue-600">Antoni Bednarz</div>
+            <ul class="flex flex-col md:flex-row mt-4 md:mt-0 space-y-2 md:space-y-0 md:space-x-6 text-lg">
+                <li><a href="#home" class="hover:text-blue-200 transition-colors duration-300 rounded-md px-3 py-1">Strona Główna</a></li>
+                <li><a href="#services" class="hover:text-blue-200 transition-colors duration-300 rounded-md px-3 py-1">Usługi</a></li>
+                <li><a href="#gallery" class="hover:text-blue-200 transition-colors duration-300 rounded-md px-3 py-1">Galeria</a></li>
+                <li><a href="#about" class="hover:text-blue-200 transition-colors duration-300 rounded-md px-3 py-1">O nas</a></li>
+                <li><a href="#contact" class="hover:text-blue-200 transition-colors duration-300 rounded-md px-3 py-1">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 md:py-32 flex items-center justify-center">
+        <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('https://placehold.co/1920x1080/0A2542/FFFFFF?text=Dzwigi_i_Transport');"></div>
+        <div class="container mx-auto px-4 text-center z-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">Antoni Bednarz Usługi Transportowo-Dźwigowe</h1>
+            <p class="text-xl md:text-2xl mb-8 leading-relaxed">Twój zaufany partner w usługach dźwigowych i transportowych</p>
+            <a href="#contact" class="inline-block bg-white text-blue-700 hover:bg-blue-100 font-bold py-3 px-8 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105">Skontaktuj się z nami</a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-blue-700">O nas</h2>
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2">
+                    <img src="images/father-son.png" alt="Pracownicy firmy" class="rounded-xl shadow-lg w-full h-auto object-cover">
+                    <p class="text-center text-gray-600 mt-2 text-sm">Doświadczenie i profesjonalizm.</p>
+                </div>
+                <div class="md:w-1/2 text-lg leading-relaxed">
+                    <p class="mb-4">
+                        Firma Antoni Bednarz Usługi Transportowo-Dźwigowe to **rodzinny biznes z ponad 20-letnim doświadczeniem** w branży, oferujący kompleksowe rozwiązania w zakresie usług dźwigowych i transportowych. Od lat świadczymy profesjonalne wsparcie dla sektora budowlanego oraz przemysłu, gwarantując niezawodność, bezpieczeństwo i terminowość.
+                    </p>
+                    <p class="mb-4">
+                        Nasze bogate doświadczenie, nowoczesny sprzęt oraz wykwalifikowana kadra operatorów i pracowników to fundamenty, na których budujemy zaufanie naszych klientów. Jako firma rodzinna, kładziemy szczególny nacisk na jakość świadczonych usług i długoterminowe relacje. Zawsze stawiamy na indywidualne podejście do każdego zlecenia, dopasowując nasze usługi do specyficznych potrzeb i wymagań projektu.
+                    </p>
+                    <p>
+                        Działamy z pasją i zaangażowaniem, dążąc do doskonałości w każdym aspekcie naszej pracy. Zapraszamy do współpracy!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-16 md:py-24 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-blue-700">Nasze Usługi</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Montaż deskowań, zbrojeń</h3>
+                    <p class="text-gray-700">Profesjonalny montaż i demontaż systemów deskowań oraz kompleksowe prace zbrojeniowe.</p>
+                </div>
+                <!-- Service Card 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Montaż wiązarów, więźb i konstrukcji stalowych</h3>
+                    <p class="text-gray-700">Specjalistyczne usługi montażowe dla konstrukcji drewnianych i stalowych.</p>
+                </div>
+                <!-- Service Card 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Prace dźwigowe</h3>
+                    <p class="text-gray-700">Szeroki zakres prac wymagających użycia dźwigów, od małych po duże obiekty.</p>
+                </div>
+                <!-- Service Card 4 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Prace przy rozbiórkach</h3>
+                    <p class="text-gray-700">Bezpieczne i efektywne rozbiórki konstrukcji z wykorzystaniem ciężkiego sprzętu.</p>
+                </div>
+                <!-- Service Card 5 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Prace przy szalunkach</h3>
+                    <p class="text-gray-700">Wsparcie w pracach z szalunkami, zapewniające precyzję i stabilność.</p>
+                </div>
+                <!-- Service Card 6 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Prace przy zbrojeniach</h3>
+                    <p class="text-gray-700">Kompleksowe usługi w zakresie przygotowania i układania zbrojenia.</p>
+                </div>
+                <!-- Service Card 7 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Roboty dźwigowe</h3>
+                    <p class="text-gray-700">Wszelkie prace budowlane i montażowe z użyciem dźwigów.</p>
+                </div>
+                <!-- Service Card 8 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Rozbiórki</h3>
+                    <p class="text-gray-700">Profesjonalne usługi rozbiórkowe obiektów budowlanych.</p>
+                </div>
+                <!-- Service Card 9 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Rozładunki, załadunki, montaż maszyn</h3>
+                    <p class="text-gray-700">Efektywne operacje załadunku, rozładunku i montażu ciężkich maszyn.</p>
+                </div>
+                <!-- Service Card 10 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Usługi dźwigowe z operatorem</h3>
+                    <p class="text-gray-700">Wynajem dźwigów wraz z doświadczonymi operatorami.</p>
+                </div>
+                <!-- Service Card 11 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Wynajem dźwigu z operatorem</h3>
+                    <p class="text-gray-700">Elastyczne warunki wynajmu dźwigów z pełnym wsparciem operatorskim.</p>
+                </div>
+                <!-- Service Card 12 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Wynajem żurawi</h3>
+                    <p class="text-gray-700">Szeroki wybór żurawi dostępnych do wynajmu na różne potrzeby budowy.</p>
+                </div>
+                <!-- Service Card 13 -->
+                <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1">
+                    <h3 class="text-xl font-semibold mb-3 text-blue-600">Żurawie wynajem</h3>
+                    <p class="text-gray-700">Dogodne warunki wynajmu żurawi budowlanych.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-blue-700">Galeria Realizacji</h2>
+            <p class="text-center text-lg mb-8 text-gray-700">Zobacz nasze projekty i sprzęt w akcji!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Each gallery item now has a 'gallery-item' class -->
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/montaz-konstrukcji-dachowej.jpeg" alt="Dźwig podnoszący konstrukcję stalową dachu" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Montaż konstrukcji dachowej</p>
+                    <p class="text-center text-gray-600 text-sm">Precyzyjne podnoszenie i montaż elementów stalowych dachu.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/prace-dzwigowe-na-budowie.jpeg" alt="Duży dźwig na placu budowy przy montażu rury" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Prace dźwigowe na budowie</p>
+                    <p class="text-center text-gray-600 text-sm">Wykorzystanie ciężkiego sprzętu do montażu dużych elementów infrastruktury.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/podnoszenie-elementow-betonowych.jpeg" alt="Dźwig podnoszący betonowy blok na placu budowy" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Podnoszenie elementów betonowych</p>
+                    <p class="text-center text-gray-600 text-sm">Precyzyjne operacje z ciężkimi prefabrykatami betonowymi.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/dzwig-na-budowie.jpeg" alt="Dźwig na placu budowy z budynkiem w tle" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Dźwig na budowie</p>
+                    <p class="text-center text-gray-600 text-sm">Wsparcie budowy z wykorzystaniem nowoczesnego dźwigu.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/transport-i-montaz-barier.jpeg" alt="Dźwig podnoszący betonową barierę" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Transport i montaż barier</p>
+                    <p class="text-center text-gray-600 text-sm">Bezpieczne przemieszczanie i instalacja ciężkich barier.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/montaz-konstrukcji-zima.jpeg" alt="Dźwig montujący konstrukcję dachu zimą" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Montaż konstrukcji zimą</p>
+                    <p class="text-center text-gray-600 text-sm">Prace montażowe w trudnych warunkach pogodowych.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/prace-ziemne-i-fundamentowe.jpeg" alt="Plac budowy z betonową ścianą i rusztowaniami" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Prace ziemne i fundamentowe</p>
+                    <p class="text-center text-gray-600 text-sm">Kompleksowe wsparcie na wczesnych etapach budowy.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/transport-wielkogabarytowy.jpeg" alt="Dźwig podnoszący duży betonowy blok" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Transport wielkogabarytowy</p>
+                    <p class="text-center text-gray-600 text-sm">Bezpieczny transport i precyzyjne umieszczanie dużych ładunków.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/budowa-domow-drewnianych.jpeg" alt="Budowa domu z bali zimą" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Budowa domów drewnianych</p>
+                    <p class="text-center text-gray-600 text-sm">Wsparcie w montażu konstrukcji domów z bali.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/montaz-wag-przemyslowych.jpeg" alt="Dźwig podnoszący dużą wagę przemysłową" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Montaż wag przemysłowych</p>
+                    <p class="text-center text-gray-600 text-sm">Precyzyjny montaż i kalibracja dużych systemów wagowych.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/prace-dzwigowe-dodatkowe-ujecie.jpeg" alt="Duży dźwig na placu budowy przy montażu rury (inne ujęcie)" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Prace dźwigowe - dodatkowe ujęcie</p>
+                    <p class="text-center text-gray-600 text-sm">Kolejne ujęcie z prac montażowych na dużą skalę.</p>
+                </div>
+
+                <!-- New images from the last batch -->
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/transport-rur-wielkogabarytowych.jpeg" alt="Duża rura stalowa na placu budowy" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Transport rur wielkogabarytowych</p>
+                    <p class="text-center text-gray-600 text-sm">Logistyka i transport dużych elementów infrastruktury.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/montaz-rur-stalowych.jpeg" alt="Dźwig przy montażu rury stalowej" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Montaż rur stalowych</p>
+                    <p class="text-center text-gray-600 text-sm">Precyzyjny montaż i pozycjonowanie dużych rur.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/prace-przy-konstrukcjach-prefabrykowanych.jpeg" alt="Dźwig na tle konstrukcji betonowej w mglisty dzień" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Prace przy konstrukcjach prefabrykowanych</p>
+                    <p class="text-center text-gray-600 text-sm">Wsparcie w montażu elementów prefabrykowanych.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/montaz-elementow-metalowych.jpeg" alt="Dźwig podnoszący element konstrukcji metalowej" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Montaż elementów metalowych</p>
+                    <p class="text-center text-gray-600 text-sm">Precyzyjne podnoszenie i instalacja konstrukcji metalowych.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/prace-dzwigowe-przy-budynkach.jpeg" alt="Dźwig na placu budowy przy budynku" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Prace dźwigowe przy budynkach</p>
+                    <p class="text-center text-gray-600 text-sm">Wsparcie w pracach budowlanych i montażowych wokół obiektów.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/prace-zbrojeniowe-i-szalunkowe.jpeg" alt="Zbrojenie i szalunki na placu budowy" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Prace zbrojeniowe i szalunkowe</p>
+                    <p class="text-center text-gray-600 text-sm">Przygotowanie fundamentów i konstrukcji betonowych.</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded-lg shadow-md gallery-item flex flex-col">
+                    <img src="images/montaz-urzadzen-przemyslowych.jpeg" alt="Dźwig podnoszący jednostkę klimatyzacyjną" class="rounded-lg w-full h-64 object-cover shadow-sm mb-2" onclick="openLightbox(this)">
+                    <p class="text-center text-gray-700 text-md font-semibold mt-auto">Montaż urządzeń przemysłowych</p>
+                    <p class="text-center text-gray-600 text-sm">Precyzyjny transport i instalacja ciężkich maszyn i urządzeń.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 md:py-24 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-blue-700">Kontakt</h2>
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="md:w-1/2 bg-gray-50 p-8 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold mb-6 text-blue-600">Informacje kontaktowe</h3>
+                    <p class="mb-4 text-lg"><strong class="text-blue-700">Telefon:</strong> <a href="tel:+48607821613" class="text-blue-600 hover:underline">+48 607 821 613</a></p>
+                    <p class="mb-4 text-lg"><strong class="text-blue-700">Email:</strong> <a href="mailto:bedantoni@poczta.onet.pl" class="text-blue-600 hover:underline">bedantoni@poczta.onet.pl</a></p>
+                    <p class="mb-4 text-lg"><strong class="text-blue-700">Adres:</strong> Polna 29, 34-103 Witanowice, Polska</p>
+                    <h4 class="text-xl font-semibold mt-8 mb-4 text-blue-600">Godziny pracy:</h4>
+                    <ul class="list-disc list-inside text-lg">
+                        <li>Poniedziałek - Piątek: 7:00 - 17:00</li>
+                        <li>Sobota: 8:00 - 14:00 (tylko wybrane usługi)</li>
+                        <li>Niedziela: Zamknięte</li>
+                    </ul>
+                </div>
+
+                <div class="md:w-1/2 bg-gray-50 p-8 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold mb-6 text-blue-600">Wyślij zapytanie</h3>
+                    <form action="https://formspree.io/f/xovlkgkk" method="POST">
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Imię i Nazwisko:</label>
+                            <input type="text" id="name" name="name" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Twoje imię i nazwisko">
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
+                            <input type="email" id="email" name="email" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Twój adres email">
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Wiadomość:</label>
+                            <textarea id="message" name="message" rows="5" class="shadow appearance-none border rounded-md w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Treść Twojej wiadomości"></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Wyślij wiadomość</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Antoni Bednarz Usługi Transportowo-Dźwigowe. Wszelkie prawa zastrzeżone.</p>
+            <p class="text-sm mt-2">Adres: Polna 29, 34-103 Witanowice, Polska</p>
+        </div>
+    </footer>
+
+    <!-- The Lightbox Modal -->
+    <div id="myLightbox" class="lightbox-modal">
+        <span class="close-button" onclick="closeLightbox()">&times;</span>
+        <div class="lightbox-image-wrapper">
+            <img class="lightbox-content" id="img01">
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <div class="lightbox-caption" id="caption"></div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
